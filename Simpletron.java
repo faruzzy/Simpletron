@@ -21,7 +21,7 @@ public class Simpletron {
 	public void prompt() {
 		Scanner input = new Scanner( System.in );
 
-		while( ! (memory[ instructionCounter ].equals("-99999")) ) {
+		while( !(memory[ instructionCounter ].equals("-99999")) ) {
 			System.out.printf( "%d%d ? ", instructionCounter, instructionCounter );
 			memory[ instructionCounter ] = input.nextLine();
 
