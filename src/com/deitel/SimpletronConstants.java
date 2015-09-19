@@ -1,4 +1,5 @@
-/*public constants declarations*/
+package com.deitel;
+
 public class SimpletronConstants {
 	
 	//Input/Ouput operations:
