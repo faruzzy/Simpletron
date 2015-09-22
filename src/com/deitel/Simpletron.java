@@ -1,58 +1,52 @@
 package com.deitel;
 
 import java.util.Scanner;
-import javax.swing.JOptionPane;
 
 public class Simpletron {
 	
-	private static String[] memory;
+	private static String[] memory = new String[100];
 	private static int accumulator = 0;
 	private static int instructionCounter = 0;
 	private static int instructionRegister = 0;
-	private static int globalOperand;
 
-	public Simpletron() {
-		memory = new String[100];
-	}
+	private static Scanner input;
 
 	private static void startMessage() {
-		System.out.println("*** Welcome to Simpletron! 					***");
-		System.out.println( "*** Please enter your program one instruction  ***" );
-		System.out.println( "*** (or data word) at a time. I will display   ***" );
-		System.out.println( "*** the location number and a question mark    ***" );
-		System.out.println( "*** You then type the word for that location.  ***" );
-		System.out.println("*** Type -99999 to stop entering your program. ***");
+		println("*** Welcome to Simpletron! 					***");
+		println("*** Please enter your program one instruction  ***");
+		println("*** (or data word) at a time. I will display   ***");
+		println("*** the location number and a question mark    ***");
+		println("*** You then type the word for that location.  ***");
+		println("*** Type -99999 to stop entering your program. ***");
 	}
 
 	private static void prompt() {
 		startMessage();
-		Scanner input = new Scanner(System.in);
+		input = new Scanner(System.in);
 		int counter = 0;
+		boolean s = false;
 
 		do {
-			System.out.printf("%02d ? ", counter, counter);
+			System.out.printf("%02d ? ", counter);
 			memory[counter] = input.nextLine();
-			counter++;
-			System.out.println();
-		} while(!(memory[counter - 1].equals("-99999")));
 
-		System.out.println("*** Program loading completed ***");
-		System.out.println("*** Program execution begins  ***");
+			counter++;
+			println();
+
+		} while(!memory[counter - 1].equals("-99999"));
+
+		println("*** Program loading completed ***");
+		println("*** Program execution begins  ***");
 	}
 
 	public static void execute() {
 		prompt();
-		for (int i = 0; i < memory.length; i++) {
-			instructionCounter = i;
+		while (true) {
 			instructionRegister = Integer.parseInt(memory[instructionCounter]);
 			determineOperationCode(instructionRegister);
 
-			if (instructionRegister / 100 == 43) {
-				break;
-			}
-
-			if (globalOperand > 0) {
-				i += globalOperand - i - 1;
+			if (instructionRegister == 4300) {
+				return;
 			}
 		}
 	}
@@ -63,56 +57,85 @@ public class Simpletron {
 
 		switch( operationCode ) {
 			case SimpletronConstants.READ :
-				int number = 
-					Integer.parseInt( JOptionPane.showInputDialog("Enter an Integer") );
+				input = new Scanner(System.in);
+				print("Enter an Integer: ");
+
+				int number = input.nextInt();
+				println();
+
 				memory[ operand ] = "" + number;
+				instructionCounter++;
 				break;
 
 			case SimpletronConstants.WRITE :
 				System.out.println( memory[ operand ] );
+				instructionCounter++;
 				break;
 
 			case SimpletronConstants.LOAD :
 				accumulator = Integer.parseInt( memory[ operand ] );
+				instructionCounter++;
 				break;
 
 			case SimpletronConstants.STORE :
 				memory[ operand ] = "" + accumulator;
+				instructionCounter++;
 				break;
 
 			case SimpletronConstants.ADD :
 				accumulator += Integer.parseInt( memory[ operand ] );
+				instructionCounter++;
 				break;
 
 			case SimpletronConstants.SUBSTRACT :
 				accumulator -= Integer.parseInt( memory[ operand ] );
+				instructionCounter++;
 				break;
 
 			case SimpletronConstants.DIVIDE :
-				accumulator /= Integer.parseInt( memory[ operand ] );
+				int divider = Integer.parseInt(memory[operand]);
+				try {
+					accumulator /= divider;
+				} catch(Exception e) {
+					System.err.println("Unexpected Operation - " + e.getMessage());
+				}
+				instructionCounter++;
 				break;
 			
 			case SimpletronConstants.MULTIPLY :
 				accumulator *= Integer.parseInt( memory[ operand ] );
+				instructionCounter++;
 				break;
 
 			case SimpletronConstants.BRANCH:
-				globalOperand = operand;
+				instructionCounter = operand;
 				break;
 
 			case SimpletronConstants.BRANCHZERO:
 				if (accumulator == 0)
-					globalOperand = operand;
+					instructionCounter = operand;
 				break;
 
 			case SimpletronConstants.BRANCHNEG :
 				if (accumulator < 0)
-					globalOperand = operand;
+					instructionCounter = operand;
 				break;
 
 			case SimpletronConstants.HALT:
 				System.out.println("*** Simpletron execution terminated ***");
 				break;
 		}
+	}
+
+	private static void print(String s) {
+		System.out.print(s);
+	}
+
+	private static void println() {
+		System.out.println();
+	}
+
+	private static void println(String s) {
+		System.out.println(s);
 	}
 }
