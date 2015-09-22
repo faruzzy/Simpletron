@@ -12,7 +12,7 @@ public class Simpletron {
 	private static Scanner input;
 
 	private static void startMessage() {
-		println("*** Welcome to Simpletron! 					***");
+		println("*** Welcome to Simpletron! 					   ***");
 		println("*** Please enter your program one instruction  ***");
 		println("*** (or data word) at a time. I will display   ***");
 		println("*** the location number and a question mark    ***");
@@ -65,6 +65,7 @@ public class Simpletron {
 
 				memory[ operand ] = "" + number;
 				instructionCounter++;
+				//dump(operationCode, operand);
 				break;
 
 			case SimpletronConstants.WRITE :
@@ -83,7 +84,10 @@ public class Simpletron {
 				break;
 
 			case SimpletronConstants.ADD :
-				accumulator += Integer.parseInt( memory[ operand ] );
+				int input = Integer.parseInt(memory[operand]);
+				if (input >= -9999 && input <= 9999) {
+					accumulator += input;
+				}
 				instructionCounter++;
 				break;
 
@@ -125,6 +129,25 @@ public class Simpletron {
 				System.out.println("*** Simpletron execution terminated ***");
 				break;
 		}
+	}
+
+	public static void dump(int operationCode, int operand) {
+		String s = " ";
+		println("REGISTERS:");
+		System.out.printf("accumulator%13s%d\n", " ", accumulator);
+		System.out.printf("instructionCounter%6s%d\n", " ", instructionCounter);
+		System.out.printf("instructionRegisger%5s%d\n", " ", instructionRegister);
+		System.out.printf("operationCode%11s%d\n", " ", operationCode);
+		System.out.printf("operand%17s%d\n", " ", operand);
+
+		println();
+
+		println("MEMORY:");
+
+		for (int i = 0; i < 10; i++) {
+			System.out.printf("%7s%d", s, i);
+		}
+		println();
 	}
 
 	private static void print(String s) {
