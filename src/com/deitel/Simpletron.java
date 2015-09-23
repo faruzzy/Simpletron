@@ -25,7 +25,6 @@ public class Simpletron {
 		startMessage();
 		input = new Scanner(System.in);
 		int counter = 0;
-		boolean s = false;
 
 		do {
 			System.out.printf("%02d ? ", counter);
@@ -33,7 +32,6 @@ public class Simpletron {
 
 			counter++;
 			println();
-
 		} while(!memory[counter - 1].equals("-99999"));
 
 		println("*** Program loading completed ***");
