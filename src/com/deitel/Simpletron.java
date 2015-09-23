@@ -1,5 +1,6 @@
 package com.deitel;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Simpletron {
@@ -46,6 +47,7 @@ public class Simpletron {
 			determineOperationCode(instructionRegister);
 
 			if (instructionRegister == 4300) {
+				println();
 				return;
 			}
 		}
@@ -57,15 +59,25 @@ public class Simpletron {
 
 		switch( operationCode ) {
 			case SimpletronConstants.READ :
-				input = new Scanner(System.in);
-				print("Enter an Integer: ");
+				int number = -1;
+				boolean s;
+				do {
+					s = false;
+					input = new Scanner(System.in);
+					print("Enter an Integer: ");
 
-				int number = input.nextInt();
+					try {
+						number = input.nextInt();
+					} catch(InputMismatchException e) {
+						s = true;
+						println();
+						System.err.println("Unexpected input, please try again!");
+					}
+				} while(s || number > 9999 || number < -999);
 				println();
 
-				memory[ operand ] = "" + number;
+				memory[operand] = "" + number;
 				instructionCounter++;
-				//dump(operationCode, operand);
 				break;
 
 			case SimpletronConstants.WRITE :
@@ -79,7 +91,7 @@ public class Simpletron {
 				break;
 
 			case SimpletronConstants.STORE :
-				memory[ operand ] = "" + accumulator;
+				memory[operand] = "" + accumulator;
 				instructionCounter++;
 				break;
 
@@ -97,11 +109,13 @@ public class Simpletron {
 				break;
 
 			case SimpletronConstants.DIVIDE :
-				int divider = Integer.parseInt(memory[operand]);
+				int divider;
 				try {
+					divider = Integer.parseInt(memory[operand]);
 					accumulator /= divider;
 				} catch(Exception e) {
 					System.err.println("Unexpected Operation - " + e.getMessage());
+					dump(operationCode, operand);
 				}
 				instructionCounter++;
 				break;
@@ -126,7 +140,9 @@ public class Simpletron {
 				break;
 
 			case SimpletronConstants.HALT:
-				System.out.println("*** Simpletron execution terminated ***");
+				println("*** Simpletron execution terminated ***");
+				println();
+				dump(operationCode, operand);
 				break;
 		}
 	}
@@ -143,9 +159,37 @@ public class Simpletron {
 		println();
 
 		println("MEMORY:");
+		int max = 0;
+		for (int i = 0; i < memory.length; i++) {
+            System.out.printf("%7s%d", s, i);
+            if (memory[i].equals("4300")) {
+				max = i;
+				break;
+			}
+		}
 
-		for (int i = 0; i < 10; i++) {
-			System.out.printf("%7s%d", s, i);
+		println();
+
+		for (int i = 0; i < max; i++) {
+			System.out.printf("%d0 ", i);
+			int t = 0;
+			for (int j = 1; j <= i + 1; j++) {
+                if (j == 0) {
+					System.out.printf("%5s", memory[j]);
+				} else {
+					System.out.printf("%8s", memory[j]);
+				}
+				t = j;
+			}
+
+			for (int k = t; k <= max; k++) {
+				if (t == 0) {
+					System.out.printf("%6s", "0000");
+				}
+				System.out.printf("%8s", "0000");
+			}
+
+			println();
 		}
 		println();
 	}
