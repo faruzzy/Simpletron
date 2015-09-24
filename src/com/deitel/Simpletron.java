@@ -159,10 +159,11 @@ public class Simpletron {
 		println("MEMORY:");
 		int max = 0;
 		for (int i = 0; i < memory.length; i++) {
-            System.out.printf("%7s%d", s, i);
             if (memory[i].equals("4300")) {
 				max = i;
 				break;
+			} else {
+				System.out.printf("%7s%d", s, i);
 			}
 		}
 
@@ -172,7 +173,7 @@ public class Simpletron {
 			System.out.printf("%d0 ", i);
 			int t = 0;
 			for (int j = 1; j <= i + 1; j++) {
-                if (j == 0) {
+                if (j == 1) {
 					System.out.printf("%5s", memory[j]);
 				} else {
 					System.out.printf("%8s", memory[j]);
@@ -180,7 +181,7 @@ public class Simpletron {
 				t = j;
 			}
 
-			for (int k = t; k <= max; k++) {
+			for (int k = t; k < max; k++) {
 				if (t == 0) {
 					System.out.printf("%6s", "0000");
 				}
