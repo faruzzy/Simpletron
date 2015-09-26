@@ -1,5 +1,4 @@
-package com.deitel;
-
+package com.deitel; 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -150,7 +149,7 @@ public class Simpletron {
 		println("REGISTERS:");
 		System.out.printf("accumulator%13s%d\n", " ", accumulator);
 		System.out.printf("instructionCounter%6s%d\n", " ", instructionCounter);
-		System.out.printf("instructionRegisger%5s%d\n", " ", instructionRegister);
+		System.out.printf("instructionRegister%5s%d\n", " ", instructionRegister);
 		System.out.printf("operationCode%11s%d\n", " ", operationCode);
 		System.out.printf("operand%17s%d\n", " ", operand);
 
