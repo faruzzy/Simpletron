@@ -1,9 +1,9 @@
-package com.deitel; 
+package com.deitel;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Simpletron {
-	
+
 	private static String[] memory = new String[100];
 	private static int accumulator = 0;
 	private static int instructionCounter = 0;
@@ -116,7 +116,7 @@ public class Simpletron {
 				}
 				instructionCounter++;
 				break;
-			
+
 			case SimpletronConstants.MULTIPLY :
 				accumulator *= Integer.parseInt( memory[ operand ] );
 				instructionCounter++;
@@ -144,7 +144,7 @@ public class Simpletron {
 		}
 	}
 
-	public static void dump(int operationCode, int operand) {
+	private static void dump(int operationCode, int operand) {
 		String s = " ";
 		println("REGISTERS:");
 		System.out.printf("accumulator%13s%d\n", " ", accumulator);
